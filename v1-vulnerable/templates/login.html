@@ -1,0 +1,40 @@
+{% extends "base.html" %}
+{% block title %}Login{% endblock %}
+
+{% block nav %}
+<nav>
+    <a class="brand" href="/login">AuthX</a>
+</nav>
+{% endblock %}
+
+{% block content %}
+<div class="card">
+    <h2>Sign in</h2>
+    <p class="subtitle">AuthX Internal Portal</p>
+
+    {% if error %}
+    <div class="alert alert-error">{{ error }}</div>
+    {% endif %}
+    {% if message %}
+    <div class="alert alert-success">{{ message }}</div>
+    {% endif %}
+
+    <form method="POST" action="/login">
+        <div class="form-group">
+            <label for="email">Email</label>
+            <input type="email" id="email" name="email" placeholder="you@authx.internal" required>
+        </div>
+        <div class="form-group">
+            <label for="password">Password</label>
+            <input type="password" id="password" name="password" placeholder="••••••••" required>
+        </div>
+        <button type="submit">Sign in</button>
+    </form>
+
+    <div class="links">
+        <a href="/forgot-password">Forgot password?</a>
+        &nbsp;·&nbsp;
+        <a href="/register">Create account</a>
+    </div>
+</div>
+{% endblock %}

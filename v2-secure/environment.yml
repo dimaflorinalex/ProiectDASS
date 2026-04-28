@@ -1,0 +1,11 @@
+name: dass-v2
+channels:
+  - conda-forge
+  - defaults
+dependencies:
+  - python=3.11
+  - pip
+  - pip:
+    - Flask==3.0.3
+    - bcrypt==4.2.0
+    - requests

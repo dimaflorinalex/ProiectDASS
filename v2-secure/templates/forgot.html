@@ -1,0 +1,36 @@
+{% extends "base.html" %}
+{% block title %}Forgot password{% endblock %}
+
+{% block nav %}
+<nav>
+    <a class="brand" href="/login">AuthX</a>
+</nav>
+{% endblock %}
+
+{% block content %}
+<div class="card">
+    <h2>Reset password</h2>
+    <p class="subtitle">Enter your account email</p>
+
+    {% if error %}
+    <div class="alert alert-error">{{ error }}</div>
+    {% endif %}
+
+    {% if reset_link %}
+    <div class="alert alert-success">
+        Reset link (shown here for demo purposes):<br>
+        <a href="{{ reset_link }}" style="color:#38bdf8; word-break:break-all;">{{ reset_link }}</a>
+    </div>
+    {% endif %}
+
+    <form method="POST" action="/forgot-password">
+        <div class="form-group">
+            <label for="email">Email</label>
+            <input type="email" id="email" name="email" placeholder="you@authx.internal" required>
+        </div>
+        <button type="submit">Send reset link</button>
+    </form>
+
+    <div class="links"><a href="/login">Back to sign in</a></div>
+</div>
+{% endblock %}

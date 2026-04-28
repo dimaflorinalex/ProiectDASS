@@ -1,0 +1,126 @@
+{% extends "base.html" %}
+{% block title %}Tickets{% endblock %}
+
+{% block nav %}
+<nav>
+    <a class="brand" href="/dashboard">AuthX</a>
+    <a href="/tickets">Tickets</a>
+    {% if user.role == "MANAGER" %}
+    <a href="/audit">Audit log</a>
+    {% endif %}
+    <a href="/logout">Sign out</a>
+</nav>
+{% endblock %}
+
+{% block content %}
+<div class="card card-wide">
+    <h2>Tickets</h2>
+    <p class="subtitle">
+        {% if user.role == "MANAGER" %}All tickets{% else %}Your tickets{% endif %}
+    </p>
+
+    {% if edit_ticket %}
+    <!-- Edit form -->
+    <form method="POST" action="/tickets/{{ edit_ticket.id }}/edit" style="margin-bottom:30px;">
+        <h3 style="margin:0 0 12px;">Edit Ticket #{{ edit_ticket.id }}</h3>
+        <div style="display:grid; grid-template-columns:1fr 1fr 1fr auto; gap:10px; align-items:end;">
+            <div class="form-group" style="margin:0;">
+                <label>Title</label>
+                <input type="text" name="title" value="{{ edit_ticket.title }}" required>
+            </div>
+            <div class="form-group" style="margin:0;">
+                <label>Severity</label>
+                <select name="severity">
+                    <option value="LOW" {% if edit_ticket.severity == "LOW" %}selected{% endif %}>Low</option>
+                    <option value="MED" {% if edit_ticket.severity == "MED" %}selected{% endif %}>Medium</option>
+                    <option value="HIGH" {% if edit_ticket.severity == "HIGH" %}selected{% endif %}>High</option>
+                </select>
+            </div>
+            <div class="form-group" style="margin:0;">
+                <label>Status</label>
+                <select name="status">
+                    <option value="OPEN" {% if edit_ticket.status == "OPEN" %}selected{% endif %}>Open</option>
+                    <option value="IN_PROGRESS" {% if edit_ticket.status == "IN_PROGRESS" %}selected{% endif %}>In Progress</option>
+                    <option value="RESOLVED" {% if edit_ticket.status == "RESOLVED" %}selected{% endif %}>Resolved</option>
+                </select>
+            </div>
+            <div style="display:flex; gap:8px; align-items:end;">
+                <button type="submit" style="width:auto; padding:10px 20px;">Save</button>
+                <a href="/tickets" style="padding:10px 16px; background:#64748b; color:white; border-radius:6px; text-decoration:none; font-size:0.9em;">Cancel</a>
+            </div>
+        </div>
+        <div class="form-group" style="margin-top:10px;">
+            <label>Description</label>
+            <textarea name="description">{{ edit_ticket.description or "" }}</textarea>
+        </div>
+    </form>
+    {% else %}
+    <!-- New ticket form -->
+    <form method="POST" action="/tickets" style="margin-bottom:30px;">
+        <div style="display:grid; grid-template-columns:1fr 1fr auto; gap:10px; align-items:end;">
+            <div class="form-group" style="margin:0;">
+                <label>Title</label>
+                <input type="text" name="title" placeholder="Ticket title" required>
+            </div>
+            <div class="form-group" style="margin:0;">
+                <label>Severity</label>
+                <select name="severity">
+                    <option value="LOW">Low</option>
+                    <option value="MED">Medium</option>
+                    <option value="HIGH">High</option>
+                </select>
+            </div>
+            <button type="submit" style="width:auto; padding:10px 20px; align-self:end;">Add</button>
+        </div>
+        <div class="form-group" style="margin-top:10px;">
+            <label>Description</label>
+            <textarea name="description" placeholder="Optional description"></textarea>
+        </div>
+    </form>
+    {% endif %}
+
+    <!-- Search -->
+    <form method="GET" action="/tickets" class="search-bar">
+        <input type="text" name="q" value="{{ q }}" placeholder="Search tickets…">
+        <button type="submit">Search</button>
+    </form>
+
+    <!-- Ticket list -->
+    {% if tickets %}
+    <table>
+        <thead>
+            <tr>
+                <th>#</th>
+                <th>Title</th>
+                <th>Severity</th>
+                <th>Status</th>
+                <th>Created</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+        {% for t in tickets %}
+            <tr>
+                <td>{{ t.id }}</td>
+                <td>{{ t.title }}</td>
+                <td><span class="badge badge-{{ t.severity | lower }}">{{ t.severity }}</span></td>
+                <td><span class="badge badge-{{ t.status | lower }}">{{ t.status }}</span></td>
+                <td>{{ t.created_at }}</td>
+                <td>
+                    <a href="/tickets/{{ t.id }}/edit" style="font-size:0.85em; color:#3b82f6;">Edit</a>
+                    &nbsp;
+                    <form method="POST" action="/tickets/{{ t.id }}/delete" style="display:inline;"
+                          onsubmit="return confirm('Delete this ticket?');">
+                        <button type="submit" style="background:none; border:none; color:#ef4444;
+                            cursor:pointer; font-size:0.85em; padding:0; text-decoration:underline;">Delete</button>
+                    </form>
+                </td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+    {% else %}
+    <p style="color:#64748b; text-align:center; padding:30px 0;">No tickets found.</p>
+    {% endif %}
+</div>
+{% endblock %}

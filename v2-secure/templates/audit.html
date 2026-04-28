@@ -1,0 +1,53 @@
+{% extends "base.html" %}
+{% block title %}Audit log{% endblock %}
+
+{% block nav %}
+<nav>
+    <a class="brand" href="/dashboard">AuthX</a>
+    <a href="/tickets">Tickets</a>
+    <a href="/audit">Audit log</a>
+    <a href="/logout">Sign out</a>
+</nav>
+{% endblock %}
+
+{% block content %}
+<div class="card card-wide">
+    <h2>Audit log</h2>
+    <p class="subtitle">All recorded system events - Manager view</p>
+
+    {% if error %}
+    <div class="alert alert-error">{{ error }}</div>
+    {% endif %}
+
+    {% if logs %}
+    <table>
+        <thead>
+            <tr>
+                <th>ID</th>
+                <th>User ID</th>
+                <th>Action</th>
+                <th>Resource</th>
+                <th>Resource ID</th>
+                <th>IP</th>
+                <th>Timestamp</th>
+            </tr>
+        </thead>
+        <tbody>
+        {% for log in logs %}
+            <tr>
+                <td>{{ log.id }}</td>
+                <td>{{ log.user_id or '-' }}</td>
+                <td>{{ log.action }}</td>
+                <td>{{ log.resource }}</td>
+                <td>{{ log.resource_id }}</td>
+                <td>{{ log.ip_address }}</td>
+                <td>{{ log.timestamp }}</td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+    {% else %}
+    <p style="color:#64748b; text-align:center; padding:30px 0;">No events recorded yet.</p>
+    {% endif %}
+</div>
+{% endblock %}

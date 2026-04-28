@@ -1,0 +1,29 @@
+{% extends "base.html" %}
+{% block title %}Dashboard{% endblock %}
+
+{% block nav %}
+<nav>
+    <a class="brand" href="/dashboard">AuthX</a>
+    <a href="/tickets">Tickets</a>
+    {% if user.role == "MANAGER" %}
+    <a href="/audit">Audit log</a>
+    {% endif %}
+    <a href="/logout">Sign out</a>
+</nav>
+{% endblock %}
+
+{% block content %}
+<div class="card">
+    <h2>Welcome back</h2>
+    <p class="subtitle">Logged in as {{ user.email }}</p>
+
+    <table>
+        <tr><th>Email</th><td>{{ user.email }}</td></tr>
+        <tr><th>Role</th><td>{{ user.role }}</td></tr>
+        <tr><th>User ID</th><td>{{ user.id }}</td></tr>
+    </table>
+
+    <br>
+    <a class="btn" href="/tickets">View tickets</a>
+</div>
+{% endblock %}

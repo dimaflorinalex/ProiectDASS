@@ -1,0 +1,33 @@
+{% extends "base.html" %}
+{% block title %}Reset password{% endblock %}
+
+{% block nav %}
+<nav>
+    <a class="brand" href="/login">AuthX</a>
+</nav>
+{% endblock %}
+
+{% block content %}
+<div class="card">
+    <h2>Set new password</h2>
+    <p class="subtitle">Enter a new password for your account</p>
+
+    {% if error %}
+    <div class="alert alert-error">{{ error }}</div>
+    {% endif %}
+    {% if message %}
+    <div class="alert alert-success">{{ message }}</div>
+    {% endif %}
+
+    <form method="POST" action="/reset-password">
+        <input type="hidden" name="token" value="{{ token }}">
+        <div class="form-group">
+            <label for="password">New password</label>
+            <input type="password" id="password" name="password" placeholder="••••••••" required>
+        </div>
+        <button type="submit">Update password</button>
+    </form>
+
+    <div class="links"><a href="/login">Back to sign in</a></div>
+</div>
+{% endblock %}
