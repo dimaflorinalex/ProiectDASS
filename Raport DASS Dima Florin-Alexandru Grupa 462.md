@@ -2,6 +2,9 @@
 
 A Flask web application built in two versions to demonstrate common authentication vulnerabilities and their fixes.
 
+- GitHub: https://github.com/dimaflorinalex/ProiectDASS
+- Video: https://www.youtube.com/watch?v=tfYsnc_bE6k
+
 **Team Members**  
 - Dima Florin-Alexandru - Group 462, Faculty of Mathematics and Computer Science, University of Bucharest
 - Assisted by Copilot (Claude Sonnet 4.6) for polishing documentation and increasing coverage of security fixes.
